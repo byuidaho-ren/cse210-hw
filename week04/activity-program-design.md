@@ -1,90 +1,136 @@
-<h3> Program 1: YouTube Videos – Design Overview </h3>
-What Does the Program Do?
-This program simulates a basic YouTube-like platform with the ability to:
+<h2>Program 1: YouTube Videos – Design Overview</h2>
+<h5>What does the program do?</h5>
 
-Create a channel
+<strong>This program models a video platform where each video has a title, length, author, and a collection of comments.</strong>
 
-Add videos to a channel
-Play a video (increases view count)
-View detailed video information
-List all videos within a channel
+The program:
+<br>Creates several Video objects.
+<br>Adds several Comment objects to each video.
+<br>Stores all videos in a list.
+<br>Iterates over the list of videos to display their details and associated comments on the console.
+<br>Essentially, it simulates a basic data structure for videos with comments, similar to YouTube videos and their comments.
 
-It demonstrates abstraction by hiding how the video system works internally and exposing only relevant methods (e.g., Play(), AddVideo(), GetDetails()).
+<h5>What are candidates for classes?</h5>
+Video: Represents a video with its details and comments.
+<br>Comment: Represents a comment with a commenter name and text.
 
-Candidate Classes & Responsibilities
-Class	Purpose / Responsibility
-Video	Represents a single video: handles its metadata (title, duration, views, channel name) and behavior (play, display info)
-Channel	Represents a YouTube channel: stores a list of Video objects and manages them
-Program	The entry point of the application: simulates creating channels, adding videos, and user interaction
+<br>Program: The entry point, responsible for running the application.
+<br>Optional candidates (not currently in the code but could be considered in a larger design):
 
-Class Details and Video Class
+<br>User: Could represent the author or commenter if expanded.
+<br>CommentCollection: To handle comments separately if the comments logic grows.
+<br>VideoCollection: To handle a list of videos if we want to extend functionality.
+
+<h5>What are the responsibilities of each class?</h5>
+Video class
+<h5>Attributes:</h5>
+Title: The video's title.
+<br>Length: Duration in seconds.
+<br>Author: The creator or uploader.
+<br>_comments: A private list of Comment objects.
+
+<h5>Responsibilities (Methods):</h5>
+Store and provide video details.
+<br>Add comments to the video.
+<br>Return the number of comments.
+<br>Provide read-only access to comments.
+
+<h5>Comment class</h5>
 Attributes:
 
-Title: string — Title of the video
-Duration: int — Length in seconds
-Views: int — View count
-ChannelName: string — Name of the publishing channel
+<br>CommenterName: The name of the person commenting.
+<br>Text: The content of the comment.
 
-Methods:
-Play() — Increments view count and displays a message
-GetDetails() — Displays video metadata and current timestamp
+<br>Responsibilities (Methods):
+<br>Store commenter's name and comment text.
 
-Channel Class
-Attributes:
-Name: string — Name of the channel
-Videos: List<Video> — Collection of videos published by this channel
-
-Methods:
-AddVideo(Video) — Adds a video to the channel
-ShowVideos() — Lists all video titles in the channel with timestamps
+<h5>Program class</h5>
+Responsibilities (Methods):
+<br>Create videos.
+<br>Create comments and add to videos.
+<br>Display videos and comments.
 
 
-```pgsql 
+After the Meeting: Individual Design Steps
+Additional Classes (Optional)
+User: to represent authors and commenters as real objects.
 
-+-----------------------+
-|        Video          |
-+-----------------------+
-| - Title: string       |
-| - Duration: int       |
-| - Views: int          |
-| - ChannelName: string |
-+-----------------------+
-| + Play(): void        |
-| + GetDetails(): void  |
-+-----------------------+
+VideoCollection: to manage multiple videos with additional behaviors.
 
-+-------------------------+
-|        Channel          |
-+-------------------------+
-| - Name: string          |
-| - Videos: List<Video>   |
-+-------------------------+
-| + AddVideo(video): void |
-| + ShowVideos(): void    |
-+-------------------------+
+CommentManager: to handle comment filtering or sorting.
+Behaviors (Methods)
 
-+----------------------+
-|      Program         |
-+----------------------+
-| + Main(args): void   |
-+----------------------+
+For Video:
+<br> ``` AddComment() ```
+<br> ``` GetNumberOfComments() ```
+<br> ``` GetComments() ```
+
+<br>For Comment:
+<br>Constructor to initialize comment.
+
+For Program:
+<br> ``` Main() ``` to run the program.
+<br>Attributes (Member Variables)
+
+For Video:
+<br> ``` Title ```
+<br> ``` Length ```
+<br> ``` Author ```
+<br> ``` _comments ```
+
+For Comment:
+<br> ``` CommenterName ```
+<br> ``` Text ```
+
+
+<h5>Class Diagram (Simple UML representation) </h5>
+
+```pgsql
+
++---------------------+
+|       Video         |
++---------------------+
+| - Title: string      |
+| - Length: int        |
+| - Author: string     |
+| - _comments: List<Comment> |
++---------------------+
+| + AddComment(c: Comment)  |
+| + GetNumberOfComments(): int |
+| + GetComments(): IReadOnlyList<Comment> |
++---------------------+
+
+          1
+          |
+          * contains
+          |
++---------------------+
+|      Comment        |
++---------------------+
+| - CommenterName: string |
+| - Text: string          |
++---------------------+
+| + Comment(name, text)   |
++---------------------+
+
 
 ```
 
-<h5> Program Flow Overview </h5> 
+<br>Flowchart or Method Interaction Description
+<br>The Program creates a list of videos.
 
-A Channel is created.
-
-One or more Video objects are created and associated with that channel.
-Videos are added to the channel via AddVideo().
-A video is played using Play(), which increases its Views.
-Video details are printed using GetDetails().
-The channel’s videos are listed using ShowVideos().
+<br>For each video:
+<br>The program creates the video object.
+<br>Adds comments using ``` AddComment() ```.
+<br>Adds the video to the videos list.
+<br>Then, the program loops through each video, printing video details and all comments by calling ``` GetComments() ``` and ``` GetNumberOfComments() ```.
 
 
 <br>
 <hr>
 <br>
+
+<h2>Program 2: Online Ordering – Design Overview</h2>
 
 <h5> Program Overview: What Does the Program Do? </h5>
 This program simulates a basic e-commerce ordering system. 
