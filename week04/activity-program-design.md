@@ -86,104 +86,168 @@ The channel’s videos are listed using ShowVideos().
 <hr>
 <br>
 
-<h3> Program 2: Online Ordering – Design Overview </h3>
-What Does the Program Do?
-This program simulates an online ordering system by allowing:
-Creation of products with price and stock
-Customers to place orders with specific products and quantities
-Stock checks and reductions when ordering
-Total price calculation for the order
-Status updates on the order
+<h5> Program Overview: What Does the Program Do? </h5>
+This program simulates a basic e-commerce ordering system. 
 
-It showcases encapsulation by protecting and managing data within classes using private setters and controlled methods (e.g., ReduceStock(), CalculateTotal()).
+<br>It:
+<br>Creates products with prices and stock.
+<br>Stores customers and their addresses.
+<br>Allows customers to place orders containing multiple items.
+<br>Updates stock when orders are placed.
+<br>Calculates total cost and provides order summaries, packing, and shipping labels.
+<br>Supports order status updates (e.g., "Pending", "Shipped").
+<br>
 
-Candidate Classes & Responsibilities
-Class	Purpose / Responsibility
-Product	Represents an item that can be ordered. Manages stock, price, and product name.
-OrderItem	Represents a product + quantity combo in an order. Calculates total price for the item.
-Order	Stores a collection of OrderItems, handles adding items, order status, and calculating total.
-Program	Entry point for the application. Simulates product creation, order creation, and interactions.
+<h5>Candidates for Classes</h5>
+The design includes six well-defined classes:
+<br>Address
+<br>Customer
+<br>Product
+<br>OrderItem
+<br>Order
+<br>Program (main execution)
+<br>
 
-Class Details and Product Class
-Attributes:
-Name: string — Product name
-Price: decimal — Unit price
-Stock: int — Quantity in stock
+<h5>Responsibilities of Each Class</h5>
+Class	Responsibilities
+<br>Address	Store and return full address details.
+<br>Customer	Store and provide customer name and address.
+<br>Product	Store product info (name, price, stock); manage stock updates.
+<br>OrderItem	Represent a product in an order with quantity; compute total price.
+<br>Order	Manage list of order items, associate with customer, handle order status, calculate total, and generate labels.
+<br>Program	Create and tie everything together; simulate real-world usage.
+<br>
 
-Methods:
-ReduceStock(quantity) — Deducts from stock if enough is available
-Restock(quantity) — Adds more to stock
+<h5>Determine Behaviors and Methods</h5>
+Class	Methods (Behaviors)
+<br>Address	GetFullAddress()
+<br>Customer	GetName(), GetAddress()
+<br>Product	ReduceStock(int), Restock(int)
+<br>OrderItem	GetTotalPrice()
+<br>Order	AddItem(Product, int), CalculateTotal(), UpdateStatus(string), ShowOrder(), GetPackingLabel(), GetShippingLabel()
+<br>
 
-OrderItem Class
-Attributes:
-Product: Product — The product being ordered
-Quantity: int — Number of units ordered
-
-Methods:
-GetTotalPrice() — Returns product price × quantity
-
-Order Class
-Attributes:
-
-OrderID: string — Unique identifier for the order
-Status: string — Tracks current order state (e.g., "Pending", "Shipped")
-items: List<OrderItem> — Collection of order items
-
-Methods:
-
-AddItem(product, quantity) — Adds an item to the order if stock is available
-CalculateTotal() — Sums total cost of all order items
-UpdateStatus(newStatus) — Updates order status
-ShowOrder() — Displays order summary
+<h5>Determine Attributes (Member Variables)</h5>
+Class	Attributes (Member Variables)
+<br>Address	_street, _city, _state, _postalCode
+<br>Customer	_name, _address
+<br>Product	_name, _price, _stock
+<br>OrderItem	_product, _quantity
+<br>Order	_items, _orderId, _status, _customer
 
 
-```pgsql 
+Class Diagram (UML-Style Summary)
 
-+------------------------+
-|        Product         |
-+------------------------+
-| - Name: string         |
-| - Price: decimal       |
-| - Stock: int           |
-+------------------------+
-| + ReduceStock(q): bool |
-| + Restock(q): void     |
-+------------------------+
+```pgsql
 
-+--------------------------+
-|       OrderItem          |
-+--------------------------+
-| - Product: Product       |
-| - Quantity: int          |
-+--------------------------+
-| + GetTotalPrice(): dec.  |
-+--------------------------+
+// Address
++----------------+
+|    Address     |
++----------------+
+| - _street      |
+| - _city        |
+| - _state       |
+| - _postalCode  |
++----------------+
+| + GetFullAddress() : string |
++----------------+
 
-+------------------------------+
-|           Order              |
-+------------------------------+
-| - OrderID: string            |
-| - Status: string             |
-| - items: List<OrderItem>     |
-+------------------------------+
-| + AddItem(p, q): void        |
-| + CalculateTotal(): decimal  |
-| + UpdateStatus(s): void      |
-| + ShowOrder(): void          |
-+------------------------------+
-
-+----------------------+
-|      Program         |
-+----------------------+
-| + Main(args): void   |
-+----------------------+
 
 ```
 
-<h5> Program Flow Overview </h5>
-Create Product instances with names, prices, and stock.
-Create an Order using an OrderID.
-Add items to the order using AddItem() (which checks stock).
-Display order details using ShowOrder() (with calculated totals).
-Update order status using UpdateStatus().
+```pgsql
 
+// Customer
++----------------+
+|   Customer     |
++----------------+
+| - _name        |
+| - _address     |
++----------------+
+| + GetName() : string        |
+| + GetAddress() : Address    |
++----------------+
+
+```
+
+```pgsql
+
+// Product
++----------------+
+|    Product     |
++----------------+
+| - _name        |
+| - _price       |
+| - _stock       |
++----------------+
+| + Name         |
+| + Price        |
+| + Stock        |
+| + ReduceStock(quantity): bool |
+| + Restock(quantity): void     |
++----------------+
+
+```
+
+```pgsql
+
+// OrderItem
++----------------+
+|   OrderItem    |
++----------------+
+| - _product     |
+| - _quantity    |
++----------------+
+| + Product      |
+| + Quantity     |
+| + GetTotalPrice() : decimal |
++----------------+
+
+```
+
+```pgsql
+
+// Order
++----------------+
+|     Order      |
++----------------+
+| - _items       |
+| - _orderId     |
+| - _status      |
+| - _customer    |
++----------------+
+| + OrderID      |
+| + Status       |
+| + AddItem(Product, int): void |
+| + CalculateTotal() : decimal |
+| + UpdateStatus(string): void |
+| + ShowOrder(): void          |
+| + GetPackingLabel() : string|
+| + GetShippingLabel() : string|
++----------------+
+
+```
+
+```
+
+Flowchart / Program Flow Description
+How the Program Runs:
+plaintext
+Copy
+Edit
+Main()
+ └──> Create Products
+ └──> Create Addresses
+ └──> Create Customers
+ └──> Create Orders
+        └──> Add Items
+            └──> Reduce Stock
+        └──> Show Order
+            └──> List Items + Total
+            └──> Show Packing Label
+            └──> Show Shipping Label
+        └──> Update Status
+
+```
+
+        
