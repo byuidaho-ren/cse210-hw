@@ -1,0 +1,3 @@
+0
+SimpleGoal:Test Goal Simple|Test Desc|88|False
+EternalGoal:New Eternal|New D|100
